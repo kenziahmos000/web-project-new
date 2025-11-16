@@ -1,0 +1,268 @@
+/* Authentication Container */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff6f61 0%, #ff8a80 100%);
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.auth-box {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 450px;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-box h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+/* Tab Switcher */
+.tab-switcher {
+  display: flex;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #666;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: #ff6f61;
+}
+
+.tab.active {
+  color: #ff6f61;
+  border-bottom-color: #ff6f61;
+}
+
+/* Form Styles */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-group input {
+  padding: 12px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #ff6f61;
+  box-shadow: 0 0 0 3px rgba(255, 111, 97, 0.1);
+}
+
+/* Submit Button */
+.btn-submit {
+  padding: 14px;
+  background: linear-gradient(135deg, #ff6f61 0%, #ff8a80 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 111, 97, 0.4);
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Messages */
+.message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.message.error {
+  background: #fee;
+  color: #c33;
+  border-left: 4px solid #c33;
+}
+
+.message.success {
+  background: #efe;
+  color: #3c3;
+  border-left: 4px solid #3c3;
+}
+
+/* Footer */
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.auth-footer a {
+  color: #ff6f61;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.auth-footer a:hover {
+  color: #ff8a80;
+}
+
+/* Logged In State */
+.auth-box.logged-in {
+  text-align: center;
+  max-width: 550px;
+}
+
+.user-info {
+  background: #ffece6;
+  padding: 24px;
+  border-radius: 12px;
+  margin: 24px 0;
+  text-align: left;
+}
+
+.user-info p {
+  margin: 12px 0;
+  color: #555;
+  font-size: 15px;
+}
+
+.user-info strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.logged-in-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-primary {
+  padding: 14px;
+  background: linear-gradient(135deg, #ff6f61 0%, #ff8a80 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 111, 97, 0.4);
+}
+
+.btn-logout {
+  padding: 14px;
+  background: white;
+  color: #c33;
+  border: 2px solid #c33;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background: #c33;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+  .auth-box {
+    padding: 30px 24px;
+  }
+
+  .auth-box h1 {
+    font-size: 28px;
+  }
+
+  .tab {
+    font-size: 14px;
+  }
+}
