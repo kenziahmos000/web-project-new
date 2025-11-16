@@ -1,0 +1,30 @@
+.homepage {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.hero {
+  padding: 60px 20px;
+  background: #ffece6;
+}
+
+.features,
+.extras {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+.feature-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 200px;
+  border-radius: 10px;
+}
+
+footer {
+  background: #ff6f61;
+  color: white;
+  padding: 20px;
+}
