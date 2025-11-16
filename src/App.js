@@ -6,7 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import RecipesPage from "./pages/RecipesPage";
 import RecipeDetailsPage from "./pages/RecipeDetailsPage";
 import RestaurantsPage from "./pages/RestaurantsPage";
-
+import Navbar from "./NavBar";
 function App() {
   return (
     <Router>

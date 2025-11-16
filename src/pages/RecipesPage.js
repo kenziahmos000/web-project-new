@@ -234,42 +234,6 @@ const RecipesPage = () => {
 
   return (
     <div className="recipes-page">
-      {/* Navbar */}
-      <nav className="navbar">
-        <h1
-          onClick={() => (window.location.href = "/")}
-          style={{ cursor: "pointer" }}
-        >
-          FoodieFind
-        </h1>
-        <ul>
-          <li>
-            <a href="/">Home</a>
-          </li>
-          <li>
-            <a href="/recipes" className="active">
-              Recipes
-            </a>
-          </li>
-          <li>
-            <a href="/restaurants">Restaurants</a>
-          </li>
-          {isLoggedIn ? (
-            <>
-              <li>
-                <button onClick={handleLogout} className="logout-btn">
-                  Logout
-                </button>
-              </li>
-            </>
-          ) : (
-            <li>
-              <a href="/login">Login / Register</a>
-            </li>
-          )}
-        </ul>
-      </nav>
-
       <div className="recipes-header">
         <h1>Recipes</h1>
         {isLoggedIn && (
