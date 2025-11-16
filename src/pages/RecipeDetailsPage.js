@@ -94,7 +94,7 @@ const RecipeDetailsPage = () => {
           </div>
 
           <div className="recipe-info">
-            <h1 className="recipe-title">{recipe.title}</h1>
+            <h1 className="recipe-title">{recipe.title} Recipe Details</h1>
 
             <div className="recipe-meta">
               <span className="recipe-author">

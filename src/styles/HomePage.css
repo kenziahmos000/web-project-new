@@ -1,6 +1,9 @@
 .homepage {
   font-family: Arial, sans-serif;
   text-align: center;
+  min-height: calc(100vh - 68px); /* Subtract navbar height */
+  display: flex;
+  flex-direction: column;
 }
 
 .hero {
@@ -16,6 +19,11 @@
   padding: 40px 20px;
 }
 
+.extras {
+  flex-direction: column;
+  align-items: center;
+}
+
 .feature-card {
   border: 1px solid #ddd;
   padding: 20px;
@@ -27,4 +35,5 @@ footer {
   background: #ff6f61;
   color: white;
   padding: 20px;
+  margin-top: auto; /* Push footer to bottom */
 }
