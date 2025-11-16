@@ -10,12 +10,13 @@ import RestaurantsPage from "./pages/RestaurantsPage";
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
         <Route path="/recipes" element={<RecipesPage />} />
         <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
         <Route path="/restaurants" element={<RestaurantsPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );
