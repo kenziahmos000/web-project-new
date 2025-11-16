@@ -9,70 +9,77 @@ const recipes = [
     name: "Spaghetti Bolognese",
     description: "Classic Italian pasta with meat sauce.",
     image: "/Assets/Recipe1.jpg",
+    rating: 4.5,
   },
   {
     id: 2,
     name: "Caesar Salad",
     description: "Fresh romaine with Caesar dressing and croutons.",
-    image: "/assets/Recipe2.jpg",
+    image: "/Assets/Recipe2.JPG",
+    rating: 4.2,
   },
   {
     id: 3,
     name: "Margherita Pizza",
     description: "Tomato, mozzarella, and fresh basil.",
-    image: "/assets/Recipe3.jpg",
+    image: "/Assets/Recipe3.jpg",
+    rating: 4.8,
   },
   {
     id: 4,
     name: "Sushi Platter",
     description: "Variety of fresh sushi rolls.",
-    image: "/assets/Recipe4.jpg",
+    image: "/Assets/Recipe4.jpg",
+    rating: 4.9,
   },
   {
     id: 5,
     name: "Chicken Tikka Masala",
     description: "Spicy and creamy Indian chicken curry.",
-    image: "/assets/Recipe5.jpg",
+    image: "/Assets/Recipe5.jpg",
+    rating: 4.6,
   },
   {
     id: 6,
     name: "Beef Burger",
     description: "Juicy beef patty with cheese and veggies.",
-    image: "/assets/Recipe6.jpg",
+    image: "/Assets/Recipe6.jpg",
+    rating: 4.4,
   },
   {
     id: 7,
     name: "Pancakes",
     description: "Fluffy pancakes with maple syrup.",
-    image: "/assets/recipe7.jpg",
+    image: "/Assets/Recipe7.jpg",
+    rating: 4.7,
   },
   {
     id: 8,
     name: "Chocolate Cake",
     description: "Rich and moist chocolate delight.",
-    image: "/assets/Recipe8.jpg",
+    image: "/Assets/Recipe8.jpg",
+    rating: 4.9,
   },
   {
     id: 9,
     name: "Grilled Salmon",
     description: "Perfectly grilled salmon with herbs.",
-    image: "/assets/Recipe9.jpg",
+    image: "/Assets/Recipe9.jpg",
+    rating: 4.8,
   },
 ];
 
 const RecipesPage = () => {
   const [search, setSearch] = useState("");
 
-  // Filter recipes based on search
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="recipes-page">
-      <h1>Recipes</h1>
+      <h1>Discover Delicious Recipes</h1>
 
-      {/* Search bar */}
       <input
         type="text"
         placeholder="Search recipes..."
@@ -81,13 +88,25 @@ const RecipesPage = () => {
         className="search-bar"
       />
 
-      {/* Recipe cards */}
       <div className="recipe-grid">
         {filteredRecipes.map((recipe) => (
           <div className="recipe-card" key={recipe.id}>
-            <img src={recipe.image} alt={recipe.name} />
-            <h3>{recipe.name}</h3>
-            <p>{recipe.description}</p>
+            <div className="recipe-image">
+              <img src={recipe.image} alt={recipe.name} />
+            </div>
+            <div className="recipe-info">
+              <h3>{recipe.name}</h3>
+              <p>{recipe.description}</p>
+              <div className="rating">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <span key={i} className={i < Math.floor(recipe.rating) ? "filled" : ""}>
+                    ★
+                  </span>
+                ))}
+                <span className="rating-number">{recipe.rating.toFixed(1)}</span>
+              </div>
+              <button>View Recipe</button>
+            </div>
           </div>
         ))}
       </div>

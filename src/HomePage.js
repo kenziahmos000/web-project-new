@@ -3,49 +3,58 @@ import React from "react";
 import "./HomePage.css";
 
 const HomePage = () => {
+  const handleGetStarted = () => {
+    const featuresSection = document.querySelector(".features");
+    if (featuresSection) {
+      featuresSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="homepage">
-      {/* Navbar */}
-      <nav className="navbar">
-        <h1>FoodieFind</h1>
-        <ul>
-          <li><a href="/recipes">Recipes</a></li>
-          <li><a href="/restaurants">Restaurants</a></li>
-          <li><a href="/login">Login</a></li>
-        </ul>
-      </nav>
-
       {/* Hero Section */}
       <section className="hero">
-        <h2>Discover Delicious Recipes & Local Restaurants</h2>
+        <h1>Discover Delicious Recipes & Local Restaurants</h1>
         <p>Find your next favorite meal, save recipes, and explore nearby restaurants!</p>
-        <button>Get Started</button>
+        <button onClick={handleGetStarted}>Get Started</button>
       </section>
 
       {/* Features Section */}
-      <section className="features">
+      <section className="features" id="features">
         <div className="feature-card">
+          <img
+            src="https://images.unsplash.com/photo-1600891964264-6c2a2d7b3d0d?auto=format&fit=crop&w=600&q=80"
+            alt="Browse Recipes"
+          />
           <h3>Browse Recipes</h3>
           <p>Search, filter, and explore hundreds of recipes.</p>
         </div>
         <div className="feature-card">
+          <img
+            src="https://images.unsplash.com/photo-1617196035981-2e6e2b48f3df?auto=format&fit=crop&w=600&q=80"
+            alt="Save Favorites"
+          />
           <h3>Save Favorites</h3>
           <p>Create your personal recipe collection with your login.</p>
         </div>
         <div className="feature-card">
+          <img
+            src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=600&q=80"
+            alt="Find Restaurants"
+          />
           <h3>Find Restaurants</h3>
           <p>Discover local restaurants with ratings and reviews.</p>
         </div>
       </section>
 
       {/* Extras Section */}
-      <section className="extras">
+      <section className="extras" id="extras">
         <h2>Extra Features</h2>
         <p>Upload recipe images, filter by category, and integrate public restaurant APIs.</p>
       </section>
 
       {/* Footer */}
-      <footer>
+      <footer id="footer">
         <p>© 2025 FoodieFind | All Rights Reserved</p>
       </footer>
     </div>
