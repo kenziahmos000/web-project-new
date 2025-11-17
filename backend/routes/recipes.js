@@ -51,7 +51,7 @@ router.get("/:id", async (req, res) => {
 // Create a new recipe (requires authentication)
 router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
   try {
-    const { title, description, imageUrl } = req.body;
+    const { title, description, imageUrl, rating } = req.body;
 
     // Validation
     if (!title || !description) {
@@ -71,11 +71,15 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
       imagePath = imageUrl;
     }
 
+    // Generate a random rating between 3.5 and 5.0 if not provided
+    const recipeRating = rating || (Math.random() * 1.5 + 3.5).toFixed(1);
+
     // Create new recipe
     const recipe = new Recipe({
       title,
       description,
       image: imagePath,
+      rating: recipeRating,
       userId: req.user.userId,
       userEmail: req.user.email,
     });
@@ -100,7 +104,7 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
 // Update a recipe (requires authentication and ownership)
 router.put("/:id", authMiddleware, upload.single("image"), async (req, res) => {
   try {
-    const { title, description, imageUrl, removeImage } = req.body;
+    const { title, description, imageUrl, removeImage, rating } = req.body;
     const fs = require("fs");
     const path = require("path");
 
@@ -125,6 +129,7 @@ router.put("/:id", authMiddleware, upload.single("image"), async (req, res) => {
     // Update recipe fields
     if (title) recipe.title = title;
     if (description) recipe.description = description;
+    if (rating) recipe.rating = rating;
 
     // Handle image update/removal
     const oldImage = recipe.image;
@@ -224,6 +229,37 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error deleting recipe",
+      error: error.message,
+    });
+  }
+});
+
+// Utility endpoint to add ratings to existing recipes (can be called once to migrate data)
+router.post("/update-ratings", async (req, res) => {
+  try {
+    // Find all recipes without ratings or with default rating
+    const recipes = await Recipe.find();
+    let updatedCount = 0;
+
+    for (let recipe of recipes) {
+      // If recipe doesn't have a rating or has the old default, assign a new random rating
+      if (!recipe.rating || recipe.rating === 4.5) {
+        recipe.rating = (Math.random() * 1.5 + 3.5).toFixed(1);
+        await recipe.save();
+        updatedCount++;
+      }
+    }
+
+    res.json({
+      success: true,
+      message: `Updated ${updatedCount} recipes with ratings`,
+      totalRecipes: recipes.length,
+    });
+  } catch (error) {
+    console.error("Error updating ratings:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error updating ratings",
       error: error.message,
     });
   }

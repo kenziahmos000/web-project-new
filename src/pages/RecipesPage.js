@@ -225,17 +225,10 @@ const RecipesPage = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    setIsLoggedIn(false);
-    setCurrentUserId(null);
-    window.location.href = "/";
-  };
-
   return (
     <div className="recipes-page">
       <div className="recipes-header">
-        <h1>Recipes</h1>
+        <h1>Discover Delicious Recipes</h1>
         {isLoggedIn && (
           <button className="btn-add-recipe" onClick={handleAddRecipe}>
             + Add Your Recipe
@@ -254,19 +247,6 @@ const RecipesPage = () => {
 
       {/* Recipe cards */}
       <div className="recipe-grid">
-        {/* Skeleton loader while saving */}
-        {loading && (
-          <div className="recipe-card skeleton-card">
-            <div className="skeleton skeleton-image"></div>
-            <div className="recipe-content">
-              <div className="skeleton skeleton-title"></div>
-              <div className="skeleton skeleton-text"></div>
-              <div className="skeleton skeleton-text"></div>
-              <div className="skeleton skeleton-author"></div>
-            </div>
-          </div>
-        )}
-
         {filteredRecipes.map((recipe) => {
           // Construct full image URL
           let imageUrl;
@@ -282,41 +262,63 @@ const RecipesPage = () => {
           }
 
           return (
-            <div
-              className="recipe-card"
-              key={recipe._id}
-              onClick={() => navigate(`/recipes/${recipe._id}`)}
-              style={{ cursor: "pointer" }}
-            >
+            <div className="recipe-card" key={recipe._id}>
               <img src={imageUrl} alt={recipe.title} />
               <div className="recipe-content">
-                <h3>{recipe.title}</h3>
-                <p>{recipe.description}</p>
-                <small className="recipe-author">By: {recipe.userEmail}</small>
-
-                {/* Show edit/delete buttons only for user's own recipes */}
-                {isLoggedIn && recipe.userId === currentUserId && (
-                  <div className="recipe-actions">
-                    <button
-                      className="btn-edit"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEditRecipe(recipe);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn-delete"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(recipe._id);
-                      }}
-                    >
-                      Delete
-                    </button>
+                <div className="recipe-info-top">
+                  <h3>{recipe.title}</h3>
+                  <p>{recipe.description}</p>
+                  <div className="rating">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <span
+                        key={i}
+                        className={
+                          i < Math.floor(recipe.rating || 0) ? "filled" : ""
+                        }
+                      >
+                        ★
+                      </span>
+                    ))}
+                    <span className="rating-number">
+                      {(recipe.rating || 0).toFixed(1)}
+                    </span>
                   </div>
-                )}
+                  <small className="recipe-author">
+                    By: {recipe.userEmail}
+                  </small>
+
+                  {/* Show edit/delete buttons only for user's own recipes */}
+                  {isLoggedIn && recipe.userId === currentUserId && (
+                    <div className="recipe-actions">
+                      <button
+                        className="btn-edit"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditRecipe(recipe);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn-delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(recipe._id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* View Recipe Button - Always at bottom */}
+                <button
+                  className="btn-view-recipe"
+                  onClick={() => navigate(`/recipes/${recipe._id}`)}
+                >
+                  View Recipe
+                </button>
               </div>
             </div>
           );

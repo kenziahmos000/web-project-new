@@ -14,6 +14,12 @@ const recipeSchema = new mongoose.Schema({
     type: String,
     default: "/assets/default-recipe.jpg",
   },
+  rating: {
+    type: Number,
+    default: 4.5,
+    min: 0,
+    max: 5,
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
