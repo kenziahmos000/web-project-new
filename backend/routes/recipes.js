@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Recipe = require("../models/Recipe");
+const User = require("../models/User");
 const authMiddleware = require("../middleware/auth");
 const upload = require("../config/upload");
 
@@ -260,6 +261,41 @@ router.post("/update-ratings", async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error updating ratings",
+      error: error.message,
+    });
+  }
+});
+
+// Admin route to delete any recipe
+router.delete("/admin/:id", authMiddleware, async (req, res) => {
+  try {
+    const requestingUser = await User.findById(req.user.userId);
+
+    if (!requestingUser || !requestingUser.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Admin privileges required.",
+      });
+    }
+
+    const recipe = await Recipe.findByIdAndDelete(req.params.id);
+
+    if (!recipe) {
+      return res.status(404).json({
+        success: false,
+        message: "Recipe not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Recipe deleted successfully by admin",
+    });
+  } catch (error) {
+    console.error("Error deleting recipe:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error deleting recipe",
       error: error.message,
     });
   }

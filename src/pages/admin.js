@@ -79,6 +79,66 @@ const AdminPanel = () => {
     }
   };
 
+  const handleDeleteUser = async (userId, userEmail) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete user "${userEmail}"?\n\nTheir recipes will remain in the system.`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`${API_URL}/auth/users/${userId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        alert(data.message);
+        fetchUsers(); // Refresh the user list
+      } else {
+        alert(data.message || "Failed to delete user");
+      }
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      alert("Network error. Please try again.");
+    }
+  };
+
+  const handleDeleteRecipe = async (recipeId, recipeTitle) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete recipe "${recipeTitle}"?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await fetch(`${API_URL}/recipes/admin/${recipeId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        alert("Recipe deleted successfully");
+        fetchRecipes(); // Refresh the recipe list
+      } else {
+        alert(data.message || "Failed to delete recipe");
+      }
+    } catch (err) {
+      console.error("Error deleting recipe:", err);
+      alert("Network error. Please try again.");
+    }
+  };
+
   if (loading) {
     return (
       <div
@@ -425,15 +485,45 @@ const AdminPanel = () => {
                         </div>
                         <div
                           style={{
-                            padding: "6px 12px",
-                            background: "#e7f3ff",
-                            color: "#0066cc",
-                            borderRadius: "20px",
-                            fontSize: "12px",
-                            fontWeight: "600",
+                            display: "flex",
+                            gap: "8px",
+                            alignItems: "center",
                           }}
                         >
-                          Regular User
+                          <div
+                            style={{
+                              padding: "6px 12px",
+                              background: "#e7f3ff",
+                              color: "#0066cc",
+                              borderRadius: "20px",
+                              fontSize: "12px",
+                              fontWeight: "600",
+                            }}
+                          >
+                            Regular User
+                          </div>
+                          <button
+                            onClick={() => handleDeleteUser(u._id, u.email)}
+                            style={{
+                              padding: "6px 12px",
+                              background: "#dc3545",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "6px",
+                              fontSize: "12px",
+                              fontWeight: "600",
+                              cursor: "pointer",
+                              transition: "background 0.2s ease",
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.target.style.background = "#c82333")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.target.style.background = "#dc3545")
+                            }
+                          >
+                            Delete
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -462,6 +552,7 @@ const AdminPanel = () => {
                     <th>Description</th>
                     <th>Author</th>
                     <th>Rating</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -471,6 +562,23 @@ const AdminPanel = () => {
                       <td>{r.description}</td>
                       <td>{r.userEmail}</td>
                       <td>{r.rating}</td>
+                      <td>
+                        <button
+                          onClick={() => handleDeleteRecipe(r._id, r.title)}
+                          style={{
+                            padding: "6px 12px",
+                            background: "#dc3545",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "6px",
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

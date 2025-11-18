@@ -205,4 +205,54 @@ router.get("/users", authMiddleware, async (req, res) => {
   }
 });
 
+// Admin route to delete a user (without deleting their recipes)
+router.delete("/users/:userId", authMiddleware, async (req, res) => {
+  try {
+    // Check if the requesting user is an admin
+    const requestingUser = await User.findById(req.user.userId);
+
+    if (!requestingUser || !requestingUser.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Admin privileges required.",
+      });
+    }
+
+    const { userId } = req.params;
+
+    // Prevent admin from deleting themselves
+    if (userId === req.user.userId) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot delete your own account.",
+      });
+    }
+
+    // Find and delete the user
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    // Note: Recipes are NOT deleted - they remain in the database
+    // The recipes will still have the userEmail field to show who created them
+
+    res.json({
+      success: true,
+      message: `User ${deletedUser.email} has been deleted. Their recipes remain in the system.`,
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error deleting user",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;

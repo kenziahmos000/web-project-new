@@ -26,7 +26,7 @@ const HomePage = () => {
       <section className="features" id="features">
         <div className="feature-card">
           <img
-            src="https://images.unsplash.com/photo-1600891964264-6c2a2d7b3d0d?auto=format&fit=crop&w=600&q=80"
+            src="https://t4.ftcdn.net/jpg/03/57/91/11/240_F_357911175_lUNZj0iZx0B6UEj3JyJwhKnJQv1jT1i4.jpg"
             alt="Browse Recipes"
           />
           <h3>Browse Recipes</h3>
@@ -34,7 +34,7 @@ const HomePage = () => {
         </div>
         <div className="feature-card">
           <img
-            src="https://images.unsplash.com/photo-1617196035981-2e6e2b48f3df?auto=format&fit=crop&w=600&q=80"
+            src="https://media.istockphoto.com/id/1081422898/photo/pan-fried-duck.jpg?s=612x612&w=0&k=20&c=kzlrX7KJivvufQx9mLd-gMiMHR6lC2cgX009k9XO6VA="
             alt="Save Favorites"
           />
           <h3>Save Favorites</h3>
