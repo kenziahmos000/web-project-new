@@ -7,6 +7,7 @@ import RecipesPage from "./pages/RecipesPage";
 import RecipeDetailsPage from "./pages/RecipeDetailsPage";
 import RestaurantsPage from "./pages/RestaurantsPage";
 import FavoritesPage from "./pages/FavoritesPage";
+import AdminPanel from "./pages/admin";
 import Navbar from "./NavBar";
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
         <Route path="/restaurants" element={<RestaurantsPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/admin" element={<AdminPanel />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>

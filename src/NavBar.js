@@ -8,6 +8,7 @@ const Navbar = () => {
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const API_URL = "http://localhost:5001/api";
 
@@ -23,6 +24,7 @@ const Navbar = () => {
           if (data.success) {
             setIsLoggedIn(true);
             setUserEmail(data.user.email);
+            setIsAdmin(data.user.isAdmin || false);
           }
         })
         .catch(() => {
@@ -35,6 +37,7 @@ const Navbar = () => {
     localStorage.removeItem("authToken");
     setIsLoggedIn(false);
     setUserEmail("");
+    setIsAdmin(false);
     navigate("/");
   };
 
@@ -67,6 +70,13 @@ const Navbar = () => {
           <li>
             <Link to="/favorites" className={isActive("/favorites")}>
               Favorites
+            </Link>
+          </li>
+        )}
+        {isAdmin && (
+          <li>
+            <Link to="/admin" className={isActive("/admin")}>
+              Admin Portal
             </Link>
           </li>
         )}

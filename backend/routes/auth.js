@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const authMiddleware = require("../middleware/auth");
 
 // JWT Secret - Change this to something random and secure
 const JWT_SECRET = "your_jwt_secret_key_change_this_to_something_random";
@@ -46,6 +47,7 @@ router.post("/register", async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
+        isAdmin: user.isAdmin,
       },
     });
   } catch (error) {
@@ -103,6 +105,7 @@ router.post("/login", async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
+        isAdmin: user.isAdmin,
       },
     });
   } catch (error) {
@@ -144,6 +147,7 @@ router.get("/me", async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
+        isAdmin: user.isAdmin,
         createdAt: user.createdAt,
       },
     });
@@ -152,6 +156,50 @@ router.get("/me", async (req, res) => {
     res.status(401).json({
       success: false,
       message: "Invalid token",
+      error: error.message,
+    });
+  }
+});
+
+// Admin route to get all users
+router.get("/users", authMiddleware, async (req, res) => {
+  try {
+    // Check if the requesting user is an admin
+    const requestingUser = await User.findById(req.user.userId);
+
+    if (!requestingUser || !requestingUser.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Admin privileges required.",
+      });
+    }
+
+    // Get all users, excluding passwords
+    const users = await User.find()
+      .select("-password")
+      .sort({ createdAt: -1 });
+
+    // Separate admin and non-admin users
+    const regularUsers = users.filter((user) => !user.isAdmin);
+    const adminUsers = users.filter((user) => user.isAdmin);
+
+    res.json({
+      success: true,
+      stats: {
+        totalUsers: users.length,
+        regularUsers: regularUsers.length,
+        adminUsers: adminUsers.length,
+      },
+      users: {
+        regular: regularUsers,
+        admins: adminUsers,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching users",
       error: error.message,
     });
   }
