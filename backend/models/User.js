@@ -19,6 +19,15 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  favorites: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Recipe",
+      },
+    ],
+    default: [],
+  },
 });
 
 // Hash password before saving

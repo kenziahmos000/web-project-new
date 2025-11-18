@@ -50,15 +50,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Extras Section */}
-      <section className="extras" id="extras">
-        <h2>Extra Features</h2>
-        <p>
-          Upload recipe images, filter by category, and integrate public
-          restaurant APIs.
-        </p>
-      </section>
-
       {/* Footer */}
       <footer id="footer">
         <p>© 2025 FoodieFind | All Rights Reserved</p>

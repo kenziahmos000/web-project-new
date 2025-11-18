@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const authRoutes = require("./routes/auth");
 const recipeRoutes = require("./routes/recipes");
+const favoritesRoutes = require("./routes/favorites");
 
 const app = express();
 const PORT = 5001;
@@ -43,12 +44,18 @@ app.get("/", (req, res) => {
         update: "PUT /api/recipes/:id (requires auth)",
         delete: "DELETE /api/recipes/:id (requires auth)",
       },
+      favorites: {
+        getAll: "GET /api/favorites (requires auth)",
+        add: "POST /api/favorites/:recipeId (requires auth)",
+        remove: "DELETE /api/favorites/:recipeId (requires auth)",
+      },
     },
   });
 });
 
 app.use("/api/auth", authRoutes);
 app.use("/api/recipes", recipeRoutes);
+app.use("/api/favorites", favoritesRoutes);
 
 // Start server
 app.listen(PORT, () => {

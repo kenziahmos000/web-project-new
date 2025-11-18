@@ -14,6 +14,7 @@ const RecipesPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [favoriteIds, setFavoriteIds] = useState([]);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -40,6 +41,7 @@ const RecipesPage = () => {
           if (data.success) {
             setIsLoggedIn(true);
             setCurrentUserId(data.user.id);
+            fetchFavorites(token);
           }
         })
         .catch(() => {
@@ -53,6 +55,24 @@ const RecipesPage = () => {
     fetchRecipes();
   }, []);
 
+  const fetchFavorites = async (token) => {
+    try {
+      const res = await fetch(`${API_URL}/favorites`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setFavoriteIds(
+          (data.favorites || []).filter(Boolean).map((f) => f._id)
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const fetchRecipes = async () => {
     try {
       const response = await fetch(`${API_URL}/recipes`);
@@ -62,6 +82,36 @@ const RecipesPage = () => {
       }
     } catch (err) {
       console.error("Error fetching recipes:", err);
+    }
+  };
+
+  const handleToggleFavorite = async (recipeId) => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const isFavorite = favoriteIds.includes(recipeId);
+
+    // INSTaNT UI UPDATE (no disappearing)
+    setFavoriteIds((prev) =>
+      isFavorite ? prev.filter((id) => id !== recipeId) : [...prev, recipeId]
+    );
+
+    try {
+      const res = await fetch(`${API_URL}/favorites/${recipeId}`, {
+        method: isFavorite ? "DELETE" : "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error();
+    } catch (err) {
+      // rollback if backend fails
+      setFavoriteIds((prev) =>
+        isFavorite ? [...prev, recipeId] : prev.filter((id) => id !== recipeId)
+      );
     }
   };
 
@@ -248,6 +298,7 @@ const RecipesPage = () => {
       {/* Recipe cards */}
       <div className="recipe-grid">
         {filteredRecipes.map((recipe) => {
+          const isFavorite = favoriteIds.includes(recipe._id);
           // Construct full image URL
           let imageUrl;
           if (recipe.image.startsWith("http")) {
@@ -263,6 +314,16 @@ const RecipesPage = () => {
 
           return (
             <div className="recipe-card" key={recipe._id}>
+              <button
+                type="button"
+                className={`favorite-toggle ${isFavorite ? "active" : ""}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleToggleFavorite(recipe._id);
+                }}
+              >
+                <span className="heart-icon">{isFavorite ? "♥" : "♡"}</span>
+              </button>
               <img src={imageUrl} alt={recipe.title} />
               <div className="recipe-content">
                 <div className="recipe-info-top">

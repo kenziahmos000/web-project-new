@@ -63,6 +63,13 @@ const Navbar = () => {
             Restaurants
           </Link>
         </li>
+        {isLoggedIn && (
+          <li>
+            <Link to="/favorites" className={isActive("/favorites")}>
+              Favorites
+            </Link>
+          </li>
+        )}
         {isLoggedIn ? (
           <>
             <li className="user-email">{userEmail}</li>
